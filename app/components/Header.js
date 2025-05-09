@@ -1,6 +1,6 @@
 import React, { useState , useEffect, use} from "react";
 import Link from "next/link";
-import { useAppContext } from "../contextAPI";
+import { useAppContext } from "../context/contextAPI";
 function Header() {
     const { data, setData , showCaseData, setShowCaseData ,currentUser , setCurrentUser, userList ,currentUserId} = useAppContext();
     const [searchQuery, setSearchQuery] = useState("");
@@ -32,10 +32,10 @@ return (
           className="h-10 w-10 mr-4"
         />
         <nav className="flex space-x-6 ml-6">
-          <Link href="/carts" className="hover:underline">
+          <Link href="/pages/carts" className="hover:underline">
             Carts
           </Link>
-          <Link href="/account" className="hover:underline">
+          <Link href="/pages/account" className="hover:underline">
             Account
           </Link>
           <Link href="/dashboard" className="hover:underline">

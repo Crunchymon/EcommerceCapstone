@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { useAppContext } from "../contextAPI";
+import { useAppContext } from "../context/contextAPI";
 function MainContent() {
     const { data, setData , showCaseData , setShowCaseData} = useAppContext();  
     async function getData() {
