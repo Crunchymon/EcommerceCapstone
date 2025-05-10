@@ -4,7 +4,7 @@ import { useAppContext } from "../context/contextAPI";
 function MainContent() {
     const { data, setData , showCaseData , setShowCaseData} = useAppContext();  
     async function getData() {
-      const res = await fetch("https://fakestoreapi.com/products");
+      const res = await fetch("api/products");
       const data = await res.json();
       setData(data);
       setShowCaseData(data);
@@ -28,7 +28,7 @@ function MainContent() {
                 className="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow w-80"
               >
                 <img
-                  src={item.image}
+                  src={item.thumbnail}
                   alt={item.title}
                   className="w-full h-48 object-contain mb-4"
                 />

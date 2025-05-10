@@ -53,20 +53,23 @@ return (
         />
         </div>
         <div>
-        {currentUser ? 
-        (<>Welcome! {currentUser} 
-          <button className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-200 mt-2 sm:mt-0 sm:ml-4"
-          onClick={()=>{setCurrentUser(null)}}>
-            Logout
-          </button>
-        </>)
-        :
-        (<Link href="/Authentication">
-          <button className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-200 mt-2 sm:mt-0 sm:ml-4">
-            Login / Signup
-          </button>
-        </Link>)
-      }
+        {currentUser ? (
+          <>
+            <span className="text-white">Welcome {currentUser.username}!</span>
+            <button 
+              className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-200 mt-2 sm:mt-0 sm:ml-4"
+              onClick={() => setCurrentUser(null)}
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <Link href="../pages/Authentication">
+            <button className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-200 mt-2 sm:mt-0 sm:ml-4">
+              Login / Signup
+            </button>
+          </Link>
+        )}
         
       </div>
     </header>
