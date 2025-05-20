@@ -9,15 +9,38 @@ function page() {
   const { currentUser, setCurrentUser } = useAppContext();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [address, setAddress] = useState(null);
 
-  const register = async (email, password, username) => {
+  const generateAddress = async () => {
+    try {
+      const res = await fetch("../../api/generate-address");
+      const data = await res.json();
+      if (res.ok) {
+        setAddress(data.address);
+      } else {
+        setError("Failed to generate address");
+      }
+    } catch (err) {
+      setError("Failed to generate address");
+    }
+  };
+
+  const register = async (formData) => {
     try {
       setLoading(true);
       setError("");
+      
+      if (!address) {
+        await generateAddress();
+      }
+
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, username })
+        body: JSON.stringify({
+          ...formData,
+          address
+        })
       });
       const data = await res.json();
       
@@ -50,7 +73,7 @@ function page() {
         setError(data.error || "Login failed");
         return;
       }
-      
+      console.log(data.user)
       setCurrentUser(data.user);
       router.push("/");
     } catch (err) {
@@ -62,14 +85,19 @@ function page() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const password = e.target.password.value;
-    const email = e.target.email.value;
+    const formData = {
+      email: e.target.email.value,
+      password: e.target.password.value,
+    };
     
     if (show === "Login") {
-      login(email, password);
+      login(formData.email, formData.password);
     } else {
-      const username = e.target.username.value;
-      register(email, password, username);
+      formData.username = e.target.username.value;
+      formData.firstName = e.target.firstName.value;
+      formData.lastName = e.target.lastName.value;
+      formData.phoneNumber = e.target.phoneNumber.value;
+      register(formData);
     }
   };
 
@@ -133,9 +161,30 @@ function page() {
                 required
               />
               <input 
+                name="firstName" 
+                type="text" 
+                placeholder="First Name" 
+                className="border border-gray-300 rounded px-4 py-2 text-gray-500" 
+                required
+              />
+              <input 
+                name="lastName" 
+                type="text" 
+                placeholder="Last Name" 
+                className="border border-gray-300 rounded px-4 py-2 text-gray-500" 
+                required
+              />
+              <input 
                 name="email" 
                 type="email" 
                 placeholder="Email" 
+                className="border border-gray-300 rounded px-4 py-2 text-gray-500" 
+                required
+              />
+              <input 
+                name="phoneNumber" 
+                type="tel" 
+                placeholder="Phone Number" 
                 className="border border-gray-300 rounded px-4 py-2 text-gray-500" 
                 required
               />
@@ -146,10 +195,24 @@ function page() {
                 className="border border-gray-300 rounded px-4 py-2 text-gray-500" 
                 required
               />
+              {address && (
+                <div className="p-4 bg-gray-50 rounded text-gray-700">
+                  <h3 className="font-semibold mb-2">Generated Address:</h3>
+                  <p>{address.street}</p>
+                  <p>{address.city}, {address.state} {address.zipCode}</p>
+                </div>
+              )}
+              <button 
+                type="button"
+                onClick={generateAddress}
+                className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+              >
+                Generate Address
+              </button>
               <button 
                 type="submit" 
                 className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                disabled={loading}
+                disabled={loading || !address}
               >
                 {loading ? "Creating account..." : "Signup"}
               </button>

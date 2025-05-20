@@ -35,7 +35,7 @@ export async function getEmailIndex() {
   }
 }
 
-export async function createUser(email, password, username) {
+export async function createUser(email, password, username, firstName, lastName, phoneNumber, address) {
   try {
     await ensureFilesExist();
     const users = await getAllUsers();
@@ -50,8 +50,13 @@ export async function createUser(email, password, username) {
     const newUser = {
       email,
       username,
+      firstName,
+      lastName,
+      phoneNumber,
+      address,
       password: await bcrypt.hash(password, 10),
-      cart: []
+      cart: [],
+      createdAt: new Date().toISOString()
     };
     
     // Update both files atomically

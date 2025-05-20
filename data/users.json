@@ -1,1 +1,18 @@
-{"50a0cadb-d306-4f61-a3dd-2d8540351a7d":{"email":"test@1234","username":"test_user","password":"$2b$10$fVnzh5PZZLK1KccJHPs66ODdy9afvRyXnj4QmHYa.18VRLRyiFnPe","cart":[]}}
+{
+    "73b20582-5e2d-4ca6-91fb-dc963f84e4b1": {
+        "email": "test@1234",
+        "username": "test_user",
+        "firstName": "test",
+        "lastName": "user",
+        "phoneNumber": "0123456789",
+        "address": {
+            "street": "123 Maple Street",
+            "city": "Anytown",
+            "state": "CA",
+            "zipCode": "91234"
+        },
+        "password": "$2b$10$RJqkd0IwZVu.yQGWxO73luqV.SyAuj/aEcqA/ik/0zyQrexhXjUDi",
+        "cart": [],
+        "createdAt": "2025-05-20T04:18:18.329Z"
+    }
+}

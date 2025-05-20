@@ -1,6 +1,10 @@
 import React, { useState , useEffect, use} from "react";
 import Link from "next/link";
 import { useAppContext } from "../context/contextAPI";
+import {Button} from "@heroui/react";
+
+
+
 function Header() {
     const { data, setData , showCaseData, setShowCaseData ,currentUser , setCurrentUser, userList ,currentUserId} = useAppContext();
     const [searchQuery, setSearchQuery] = useState("");
@@ -35,7 +39,7 @@ return (
           <Link href="/pages/carts" className="hover:underline">
             Carts
           </Link>
-          <Link href="/pages/account" className="hover:underline">
+          <Link href="/pages/Accounts" className="hover:underline">
             Account
           </Link>
           <Link href="/dashboard" className="hover:underline">
@@ -64,11 +68,13 @@ return (
             </button>
           </>
         ) : (
+          <>
           <Link href="../pages/Authentication">
             <button className="bg-white text-blue-600 px-4 py-2 rounded hover:bg-gray-200 mt-2 sm:mt-0 sm:ml-4">
               Login / Signup
             </button>
           </Link>
+          </>
         )}
         
       </div>
