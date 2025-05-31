@@ -77,7 +77,8 @@ function page() {
       setCurrentUser(data.user);
       router.push("/");
     } catch (err) {
-      setError("Login failed. Please try again.");
+      console.log(err)
+      setError("Login failed. Please try again");
     } finally {
       setLoading(false);
     }

@@ -11,18 +11,10 @@ export async function GET(_, { params }) {
 }
 
 export async function POST(req, { params }) {
-  const { productId, quantity } = await req.json();
+  const { cart } = await req.json();
   const users = await fs.readJSON(usersFile);
   const user = users[params.userId];
   if (!user) return Response.json({ error: 'User not found' }, { status: 404 });
-
-  const cart = user.cart || [];
-  const existing = cart.find(item => item.productId === productId);
-  if (existing) {
-    existing.quantity += quantity;
-  } else {
-    cart.push({ productId, quantity });
-  }
 
   user.cart = cart;
   await fs.outputJSON(usersFile, users);

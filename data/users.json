@@ -1,18 +1,1 @@
-{
-    "73b20582-5e2d-4ca6-91fb-dc963f84e4b1": {
-        "email": "test@1234",
-        "username": "test_user",
-        "firstName": "test",
-        "lastName": "user",
-        "phoneNumber": "0123456789",
-        "address": {
-            "street": "123 Maple Street",
-            "city": "Anytown",
-            "state": "CA",
-            "zipCode": "91234"
-        },
-        "password": "$2b$10$RJqkd0IwZVu.yQGWxO73luqV.SyAuj/aEcqA/ik/0zyQrexhXjUDi",
-        "cart": [],
-        "createdAt": "2025-05-20T04:18:18.329Z"
-    }
-}
+{"73b20582-5e2d-4ca6-91fb-dc963f84e4b1":{"email":"test@1234","username":"test_user","firstName":"test","lastName":"user","phoneNumber":"0123456789","address":{"street":"123 Maple Street","city":"Anytown","state":"CA","zipCode":"91234"},"password":"$2b$10$RJqkd0IwZVu.yQGWxO73luqV.SyAuj/aEcqA/ik/0zyQrexhXjUDi","cart":[{"quantity":38717015201368570000}],"createdAt":"2025-05-20T04:18:18.329Z"},"945b668b-dc52-47f0-923c-009604d258ab":{"email":"test_2@1234","username":"test_user_2","firstName":"test2","lastName":"user","phoneNumber":"0123456789","address":{"street":"789 Oak Avenue","city":"Anytown","state":"CA","zipCode":"91234"},"password":"$2b$10$SeFAqi1J/yPE9z5hUlUuPeWnPKHaWMQGvMBtA47qd8QEhSJ9iMeeO","cart":[],"createdAt":"2025-05-31T06:15:45.571Z"}}
