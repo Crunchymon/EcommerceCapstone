@@ -80,7 +80,7 @@ export const AppProvider = ({ children }) => {
   }, [currentUser]);
 
   async function getData(){
-    const res = await fetch("../api/products")
+    const res = await fetch("/api/products")
     const data = await res.json()
     setData(data)
     setShowCaseData(data)

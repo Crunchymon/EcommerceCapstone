@@ -2,8 +2,10 @@
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAppContext } from '../../context/contextAPI'
+import Header from '@/app/components/Header'
+import Footer from '@/app/components/Footer'
 
-function page() {
+function Authentication() {
   const router = useRouter();
   const [show, setShow] = useState("Login")
   const { currentUser, setCurrentUser } = useAppContext();
@@ -73,11 +75,10 @@ function page() {
         setError(data.error || "Login failed");
         return;
       }
-      console.log(data.user)
+      
       setCurrentUser(data.user);
       router.push("/");
     } catch (err) {
-      console.log(err)
       setError("Login failed. Please try again");
     } finally {
       setLoading(false);
@@ -103,126 +104,152 @@ function page() {
   };
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <h1 className="text-4xl font-bold mb-4 text-gray-700">Authentication</h1>
-        <div className="flex flex gap-4">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-            onClick={() => setShow("Login")}>
-            Login
-          </button>
-          <button className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-            onClick={() => setShow("Signup")}>
-            Signup
-          </button>
-        </div>
-        
-        {error && (
-          <div className="mt-4 p-2 bg-red-100 text-red-700 rounded">
-            {error}
-          </div>
-        )}
+    <div className="min-h-screen bg-slate-50">
+      <Header />
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-md mx-auto">
+          <div className="bg-white rounded-lg shadow-sm p-8">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-slate-900">Welcome Back</h1>
+              <p className="mt-2 text-slate-600">Please sign in to your account</p>
+            </div>
 
-        {show === "Login" ? (
-          <div className='mt-4'>
-            <h2 className="text-2xl font-semibold mb-2 text-gray-700">Login</h2>
-            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-              <input 
-                name="email" 
-                type="email" 
-                placeholder="Email" 
-                className="border border-gray-300 rounded px-4 py-2 text-gray-500" 
-                required
-              />
-              <input 
-                name="password" 
-                type="password" 
-                placeholder="Password" 
-                className="border border-gray-300 rounded px-4 py-2 text-gray-500" 
-                required
-              />
+            {/* Toggle Buttons */}
+            <div className="flex gap-4 mb-8">
               <button 
-                type="submit" 
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                disabled={loading}
+                className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors duration-200 ${
+                  show === "Login" 
+                    ? "bg-[#023047] text-white" 
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+                onClick={() => setShow("Login")}
               >
-                {loading ? "Logging in..." : "Login"}
+                Login
               </button>
-            </form>
-          </div>
-        ) : (
-          <div className='mt-4'>
-            <h2 className="text-2xl font-semibold mb-2 text-gray-700">Signup</h2>
-            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-              <input 
-                name="username" 
-                type="text" 
-                placeholder="Username" 
-                className="border border-gray-300 rounded px-4 py-2 text-gray-500" 
-                required
-              />
-              <input 
-                name="firstName" 
-                type="text" 
-                placeholder="First Name" 
-                className="border border-gray-300 rounded px-4 py-2 text-gray-500" 
-                required
-              />
-              <input 
-                name="lastName" 
-                type="text" 
-                placeholder="Last Name" 
-                className="border border-gray-300 rounded px-4 py-2 text-gray-500" 
-                required
-              />
-              <input 
-                name="email" 
-                type="email" 
-                placeholder="Email" 
-                className="border border-gray-300 rounded px-4 py-2 text-gray-500" 
-                required
-              />
-              <input 
-                name="phoneNumber" 
-                type="tel" 
-                placeholder="Phone Number" 
-                className="border border-gray-300 rounded px-4 py-2 text-gray-500" 
-                required
-              />
-              <input 
-                name="password" 
-                type="password" 
-                placeholder="Password" 
-                className="border border-gray-300 rounded px-4 py-2 text-gray-500" 
-                required
-              />
-              {address && (
-                <div className="p-4 bg-gray-50 rounded text-gray-700">
-                  <h3 className="font-semibold mb-2">Generated Address:</h3>
-                  <p>{address.street}</p>
-                  <p>{address.city}, {address.state} {address.zipCode}</p>
+              <button 
+                className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors duration-200 ${
+                  show === "Signup" 
+                    ? "bg-[#023047] text-white" 
+                    : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                }`}
+                onClick={() => setShow("Signup")}
+              >
+                Sign Up
+              </button>
+            </div>
+
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                <p className="text-red-600 text-sm">{error}</p>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {show === "Signup" && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Username</label>
+                    <input 
+                      name="username" 
+                      type="text" 
+                      required
+                      className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#023047] focus:border-transparent"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">First Name</label>
+                      <input 
+                        name="firstName" 
+                        type="text" 
+                        required
+                        className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#023047] focus:border-transparent"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-1">Last Name</label>
+                      <input 
+                        name="lastName" 
+                        type="text" 
+                        required
+                        className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#023047] focus:border-transparent"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Phone Number</label>
+                    <input 
+                      name="phoneNumber" 
+                      type="tel" 
+                      required
+                      className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#023047] focus:border-transparent"
+                    />
+                  </div>
+                </>
+              )}
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+                <input 
+                  name="email" 
+                  type="email" 
+                  required
+                  className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#023047] focus:border-transparent"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                <input 
+                  name="password" 
+                  type="password" 
+                  required
+                  className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#023047] focus:border-transparent"
+                />
+              </div>
+
+              {show === "Signup" && (
+                <div>
+                  {address ? (
+                    <div className="p-4 bg-slate-50 rounded-lg">
+                      <h3 className="font-medium text-slate-900 mb-2">Generated Address:</h3>
+                      <p className="text-slate-600">{address.street}</p>
+                      <p className="text-slate-600">{address.city}, {address.state} {address.zipCode}</p>
+                    </div>
+                  ) : (
+                    <button 
+                      type="button"
+                      onClick={generateAddress}
+                      className="w-full py-2 px-4 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition-colors duration-200"
+                    >
+                      Generate Address
+                    </button>
+                  )}
                 </div>
               )}
-              <button 
-                type="button"
-                onClick={generateAddress}
-                className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
-              >
-                Generate Address
-              </button>
+
               <button 
                 type="submit" 
-                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                disabled={loading || !address}
+                disabled={loading || (show === "Signup" && !address)}
+                className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-colors duration-200 ${
+                  loading || (show === "Signup" && !address)
+                    ? "bg-slate-400 cursor-not-allowed"
+                    : "bg-[#023047] hover:bg-[#012235]"
+                }`}
               >
-                {loading ? "Creating account..." : "Signup"}
+                {loading 
+                  ? (show === "Login" ? "Signing in..." : "Creating account...") 
+                  : (show === "Login" ? "Sign In" : "Create Account")}
               </button>
             </form>
           </div>
-        )}
+        </div>
       </div>
-    </>
-  )
+
+      <Footer />
+    </div>
+  );
 }
 
-export default page
+export default Authentication;

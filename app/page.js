@@ -4,15 +4,19 @@ import Header from "./components/Header";
 import MainContent from "./components/Main";
 import Footer from "./components/Footer";
 import { AppProvider } from "./context/contextAPI";
+import Link from 'next/link';
+import Image from 'next/image';
+
+// This would typically come from your database or API
+
+
 export default function App() {
   return (
-    <>
-      <AppProvider>
-        <Header />
-        <MainContent />
-        <Footer />
-      </AppProvider>
-    </>
+    <div className="min-h-screen bg-slate-50">
+      <Header />
+      <MainContent/>
+      <Footer />
+    </div>
   );
 }
 
