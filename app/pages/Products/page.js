@@ -12,6 +12,24 @@ function Products() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [categories, setCategories] = useState([]);
   const [filterBy, setFilterBy] = useState("Filter By")
+
+  async function updateCart(userID,updatedCart){
+
+    try {
+      const response = await fetch(`/api/cart/${userID}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedCart),
+      });
+    }
+    catch(error){
+      console.log(error)
+    }
+  
+  }
+
   
 
   useEffect(() => {
@@ -127,7 +145,7 @@ function Products() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {showCaseData.map((item) => (
              
-              <Card key={item.id} item={item} />
+              <Card key={item.id} item={item} callback={updateCart}/>
               
             ))}
           </div>

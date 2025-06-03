@@ -3,6 +3,8 @@ import { useAppContext } from '../../context/contextAPI'
 import { useCart } from '../../context/CartContext'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import Header  from '@/app/components/Header'
+import Footer from '@/app/components/Footer'
 
 function Carts() {
   const { currentUser } = useAppContext()
@@ -16,7 +18,8 @@ function Carts() {
   }, [currentUser, router])
 
   if (!currentUser) {
-    return (
+    return 
+      <>
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center px-4">
         <div className="max-w-md w-full text-center">
           <h1 className="text-3xl font-bold text-slate-900 mb-6">Please login to view your cart</h1>
@@ -28,13 +31,16 @@ function Carts() {
           </button>
         </div>
       </div>
-    )
+    
+    </>
   }
 
   return (
+    <>
+    <Header/>
     <main className="min-h-screen bg-slate-50">
       {/* Header Section */}
-      <section className="bg-[#63B5C5] text-white py-12">
+      <section className="bg-[#023047] text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-3xl font-bold text-center">Shopping Cart</h1>
         </div>
@@ -114,7 +120,7 @@ function Carts() {
                     </div>
                   </div>
                 </div>
-                <button className="w-full mt-6 inline-flex items-center justify-center px-6 py-3 text-base font-semibold rounded-lg bg-[#63B5C5] text-white hover:bg-[#4A9BA8] transition-colors duration-200">
+                <button className="w-full mt-6 inline-flex items-center justify-center px-6 py-3 text-base font-semibold rounded-lg bg-[#023047] text-white hover:bg-[#035e8c] transition-colors duration-200">
                   Proceed to Checkout
                 </button>
               </div>
@@ -136,6 +142,8 @@ function Carts() {
         )}
       </div>
     </main>
+    <Footer/>
+    </>
   )
 }
 

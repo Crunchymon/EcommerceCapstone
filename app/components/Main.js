@@ -1,7 +1,6 @@
 
 import Link from "next/link";
 import { useAppContext } from "../context/contextAPI";
-import { useCart } from "../context/CartContext";
 import { Card } from "./card"
 import Image from "next/image";
 

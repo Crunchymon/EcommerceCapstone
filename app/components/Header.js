@@ -5,7 +5,6 @@ import { useAppContext } from "../context/contextAPI";
 
 function Header() {
     const { currentUser, setCurrentUser } = useAppContext();
-
     return (
         <header className="bg-[#023047] text-white shadow-md">
             <div className="flex flex-col sm:flex-row items-center justify-between py-4 px-4">

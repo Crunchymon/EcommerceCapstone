@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , use} from 'react';
 import { useAppContext } from '@/app/context/contextAPI';
 import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
@@ -7,6 +7,7 @@ import { useCart } from '@/app/context/CartContext';
 import Image from 'next/image';
 
 function ProductPage({ params }) {
+  const unbundledParams = use(params)
   const { currentUser } = useAppContext();
   const { addToCart } = useCart();
   const [product, setProduct] = useState(null);
@@ -26,7 +27,7 @@ function ProductPage({ params }) {
   useEffect(() => {
     async function fetchProduct() {
       try {
-        const res = await fetch(`/api/products/${params.id}`);
+        const res = await fetch(`/api/products/${unbundledParams.id}`);
         if (!res.ok) throw new Error('Product not found');
         const data = await res.json();
         setProduct(data);
@@ -72,6 +73,68 @@ function ProductPage({ params }) {
       return;
     }
     addToCart(product);
+  };
+
+  const handleBuyNow = async () => {
+    if (!currentUser?.id) {
+      console.error('User not logged in');
+      alert('Please login to purchase items.'); // Simple feedback
+      return;
+    }
+
+    if (product.stock === 0) {
+      alert('This item is out of stock.'); // Simple feedback
+      return;
+    }
+
+    // Simulate a dummy payment process (replace with actual payment gateway integration)
+    const paymentSuccessful = confirm('Proceed with dummy payment for ' + product.title + '?');
+
+    if (paymentSuccessful) {
+      try {
+        // Send order details to the server API
+        const res = await fetch('/api/order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: currentUser.id,
+            product: { // Include relevant product details for the order history
+                id: product.id,
+                title: product.title,
+                price: product.price,
+                quantity: 1, // Buy Now is typically for a single item
+                // Add other necessary fields like thumbnail, etc.
+                thumbnail: product.thumbnail
+            }
+          }),
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new Error(errorData.error || 'Failed to place order');
+        }
+
+        const result = await res.json();
+        console.log('Order placed successfully:', result);
+        alert('Order placed successfully!'); // Simple success feedback
+
+        // Optionally remove the item from the cart if it was in there
+        // This depends on your desired Buy Now flow. If Buy Now bypasses cart,
+        // you might not need this. If it's an alternative checkout from product page,
+        // you might remove it from cart. For this example, I'll assume it could be in cart.
+         // This will be implemented after adding the cart context to this page
+         // const { removeFromCart } = useCart(); // Need to access useCart here
+         // removeFromCart(product.id);
+
+      } catch (error) {
+        console.error('Error placing order:', error);
+        alert('Failed to place order: ' + error.message); // Simple error feedback
+      }
+    } else {
+      alert('Payment cancelled.'); // Simple feedback for cancelled payment
+    }
   };
 
   return (
@@ -182,6 +245,7 @@ function ProductPage({ params }) {
                   </div>
                 </div>
 
+                {/* Add to Cart Button */}
                 <button
                   onClick={handleAddToCart}
                   disabled={!currentUser || product.stock === 0}
@@ -196,6 +260,23 @@ function ProductPage({ params }) {
                     : product.stock === 0
                     ? 'Out of Stock'
                     : 'Add to Cart'}
+                </button>
+
+                {/* Buy Now Button */}
+                <button
+                  onClick={handleBuyNow}
+                  disabled={!currentUser || product.stock === 0}
+                  className={`w-full py-3 px-6 rounded-lg font-semibold border ${
+                     !currentUser || product.stock === 0
+                      ? 'border-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'border-[#023047] text-[#023047] hover:bg-slate-100'
+                  } transition-colors duration-200`}
+                >
+                  {!currentUser
+                    ? 'Login to Buy Now'
+                    : product.stock === 0
+                    ? 'Out of Stock'
+                    : 'Buy Now'}
                 </button>
               </div>
             </div>
