@@ -11,37 +11,17 @@ function Authentication() {
   const { currentUser, setCurrentUser } = useAppContext();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [address, setAddress] = useState(null);
-
-  const generateAddress = async () => {
-    try {
-      const res = await fetch("../../api/generate-address");
-      const data = await res.json();
-      if (res.ok) {
-        setAddress(data.address);
-      } else {
-        setError("Failed to generate address");
-      }
-    } catch (err) {
-      setError("Failed to generate address");
-    }
-  };
 
   const register = async (formData) => {
     try {
       setLoading(true);
       setError("");
       
-      if (!address) {
-        await generateAddress();
-      }
-
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          address
         })
       });
       const data = await res.json();
@@ -209,31 +189,11 @@ function Authentication() {
                 />
               </div>
 
-              {show === "Signup" && (
-                <div>
-                  {address ? (
-                    <div className="p-4 bg-slate-50 rounded-lg">
-                      <h3 className="font-medium text-slate-900 mb-2">Generated Address:</h3>
-                      <p className="text-slate-600">{address.street}</p>
-                      <p className="text-slate-600">{address.city}, {address.state} {address.zipCode}</p>
-                    </div>
-                  ) : (
-                    <button 
-                      type="button"
-                      onClick={generateAddress}
-                      className="w-full py-2 px-4 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition-colors duration-200"
-                    >
-                      Generate Address
-                    </button>
-                  )}
-                </div>
-              )}
-
               <button 
                 type="submit" 
-                disabled={loading || (show === "Signup" && !address)}
+                disabled={loading}
                 className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-colors duration-200 ${
-                  loading || (show === "Signup" && !address)
+                  loading
                     ? "bg-slate-400 cursor-not-allowed"
                     : "bg-[#023047] hover:bg-[#012235]"
                 }`}

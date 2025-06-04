@@ -8,8 +8,57 @@ import Footer from '@/app/components/Footer'
 
 function Carts() {
   const { currentUser } = useAppContext()
-  const { cart, removeFromCart, updateQuantity, getCartTotal } = useCart()
+  const { cart, removeFromCart, updateQuantity, getCartTotal, clearCart } = useCart()
   const router = useRouter()
+
+  const handleCheckout = async () => {
+    if (!currentUser) {
+      alert('Please login to checkout.');
+      router.push('/pages/Authentication');
+      return;
+    }
+
+    if (!cart || cart.length === 0) {
+      alert('Your cart is empty.');
+      return;
+    }
+
+    try {
+      const orderData = {
+        userId: currentUser.id,
+        isCartCheckout: true,
+        items: cart.map(item => ({
+          id: item.id,
+          title: item.title,
+          price: item.price,
+          quantity: item.quantity,
+          thumbnail: item.thumbnail
+        }))
+      };
+
+      const res = await fetch('/api/order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.error || 'Failed to place order');
+      }
+
+      const result = await res.json();
+      alert(`Order placed successfully! Order ID: ${result.orderId}`);
+      clearCart(); // Clear the cart after successful order
+      router.push('/pages/Dashboard'); // Redirect to dashboard
+
+    } catch (error) {
+      console.error('Error placing order:', error);
+      alert(`Error placing order: ${error.message}. Please try again.`);
+    }
+  };
 
   useEffect(() => {
     if (!currentUser) {
@@ -120,7 +169,10 @@ function Carts() {
                     </div>
                   </div>
                 </div>
-                <button className="w-full mt-6 inline-flex items-center justify-center px-6 py-3 text-base font-semibold rounded-lg bg-[#023047] text-white hover:bg-[#035e8c] transition-colors duration-200">
+                <button 
+                  onClick={handleCheckout}
+                  className="w-full mt-6 inline-flex items-center justify-center px-6 py-3 text-base font-semibold rounded-lg bg-[#023047] text-white hover:bg-[#035e8c] transition-colors duration-200"
+                >
                   Proceed to Checkout
                 </button>
               </div>

@@ -5,10 +5,21 @@ const usersFile = path.join(process.cwd(), 'data', 'users.json');
 
 export async function POST(req) {
     try {
-      const { userId, product } = await req.json();
+      const { userId, product, isCartCheckout, items } = await req.json();
 
-      if (!userId || !product) {
-        return new Response(JSON.stringify({ error: 'User ID and product data are required' }), { status: 400 });
+      if (!userId) {
+        return new Response(JSON.stringify({ error: 'User ID is required' }), { status: 400 });
+      }
+
+      // Validate request data based on order type
+      if (isCartCheckout) {
+        if (!items || !Array.isArray(items) || items.length === 0) {
+          return new Response(JSON.stringify({ error: 'Cart items are required for checkout' }), { status: 400 });
+        }
+      } else {
+        if (!product) {
+          return new Response(JSON.stringify({ error: 'Product data is required for single order' }), { status: 400 });
+        }
       }
 
       const users = await fs.readJSON(usersFile);
@@ -23,22 +34,56 @@ export async function POST(req) {
         user.orders = [];
       }
 
-      // Add the purchased product to the user's orders
-      // You might want to add more details here like timestamp, order ID, etc.
-      user.orders.push({ ...product, purchaseDate: new Date().toISOString(), status: 'Processing' });
+      const orderDate = new Date().toISOString();
+      const orderId = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-      // Optionally remove the item from the cart if it exists there
-      // This depends on your Buy Now flow - if it bypasses the cart,
-      // you might not need to remove it from the cart here.
-      // user.cart = user.cart.filter(item => item.id !== product.id);
+      if (isCartCheckout) {
+        // Create a single order for all cart items
+        const order = {
+          orderId,
+          items: items.map(item => ({
+            id: item.id,
+            title: item.title,
+            price: item.price,
+            quantity: item.quantity,
+            thumbnail: item.thumbnail,
+            total: item.price * item.quantity
+          })),
+          total: items.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+          purchaseDate: orderDate,
+          status: 'Processing'
+        };
+        user.orders.push(order);
+      } else {
+        // Single product order
+        const order = {
+          orderId,
+          items: [{
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            quantity: product.quantity,
+            thumbnail: product.thumbnail,
+            total: product.price * product.quantity
+          }],
+          total: product.price * product.quantity,
+          purchaseDate: orderDate,
+          status: 'Processing'
+        };
+        user.orders.push(order);
+      }
 
       await fs.outputJSON(usersFile, users, { spaces: 2 });
 
-      return new Response(JSON.stringify({ message: 'Order placed successfully', order: product }), { status: 200 });
+      return new Response(JSON.stringify({ 
+        message: 'Order placed successfully', 
+        orderId,
+        purchaseDate: orderDate
+      }), { status: 200 });
 
     } catch (error) {
       console.error('Error processing order:', error);
       return new Response(JSON.stringify({ error: 'Internal Server Error' }), { status: 500 });
     }
-  }
+}
   

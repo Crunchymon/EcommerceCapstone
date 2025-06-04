@@ -106,7 +106,7 @@ function Dashboard() {
 
           {/* Orders Sections */}
           <div className="lg:col-span-2 space-y-8">
-            {/* Current Orders */}
+          {/* Current Orders */}
             <div className="bg-white rounded-lg shadow-sm p-6">
               <h2 className="text-xl font-bold text-slate-900 mb-6">Current Orders ({currentOrders.length})</h2>
               {loading ? (
@@ -128,26 +128,28 @@ function Dashboard() {
                         </span>
                       </div>
                       <div className="space-y-2">
-                        <div key={order.id} className="flex justify-between text-sm items-center">
-                          <div className="flex items-center space-x-2">
-                            <img src={order.thumbnail} alt={order.title} className="w-8 h-8 rounded object-cover"/>
-                            <span className="text-slate-600">
-                              {order.title} x {order.quantity}
-                            </span>
+                        {order.items.map((item, itemIndex) => (
+                          <div key={item.id} className="flex justify-between text-sm items-center">
+                            <div className="flex items-center space-x-2">
+                              <img src={item.thumbnail} alt={item.title} className="w-8 h-8 rounded object-cover"/>
+                              <span className="text-slate-600">
+                                {item.title} x {item.quantity}
+                              </span>
+                            </div>
+                            <span className="text-slate-900">${item.price.toFixed(2)}</span>
                           </div>
-                          <span className="text-slate-900">${order.price.toFixed(2)}</span>
-                        </div>
+                        ))}
                       </div>
                       <div className="mt-4 pt-4 border-t border-slate-200">
                         <div className="flex justify-between font-semibold">
                           <span>Total</span>
-                          <span>${(order.price * order.quantity).toFixed(2)}</span>
+                          <span>${order.total.toFixed(2)}</span>
                         </div>
                       </div>
                       {/* Map Component for tracking - Placeholder */}
                       {/* <MapComponent order={order} /> */}
-                    </div>
-                  ))}
+                          </div>
+                        ))}
                 </div>
               ) : (
                 <div className="text-center py-8">
@@ -178,20 +180,22 @@ function Dashboard() {
                         </span>
                       </div>
                       <div className="space-y-2">
-                        <div key={order.id} className="flex justify-between text-sm items-center">
-                          <div className="flex items-center space-x-2">
-                            <img src={order.thumbnail} alt={order.title} className="w-8 h-8 rounded object-cover"/>
-                            <span className="text-slate-600">
-                              {order.title} x {order.quantity}
-                            </span>
+                        {order.items.map((item, itemIndex) => (
+                          <div key={item.id} className="flex justify-between text-sm items-center">
+                            <div className="flex items-center space-x-2">
+                              <img src={item.thumbnail} alt={item.title} className="w-8 h-8 rounded object-cover"/>
+                              <span className="text-slate-600">
+                                {item.title} x {item.quantity}
+                              </span>
+                            </div>
+                            <span className="text-slate-900">${item.price.toFixed(2)}</span>
                           </div>
-                          <span className="text-slate-900">${order.price.toFixed(2)}</span>
-                        </div>
+                        ))}
                       </div>
                       <div className="mt-4 pt-4 border-t border-slate-200">
                         <div className="flex justify-between font-semibold">
                           <span>Total</span>
-                          <span>${(order.price * order.quantity).toFixed(2)}</span>
+                          <span>${order.total.toFixed(2)}</span>
                         </div>
                       </div>
                     </div>

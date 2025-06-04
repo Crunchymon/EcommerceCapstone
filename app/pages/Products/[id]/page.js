@@ -54,8 +54,8 @@ function ProductPage({ params }) {
 
   if (error || !product) {
     return (
-      <>
-        <Header />
+        <>
+            <Header />
         <div className="min-h-screen bg-slate-50 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-2xl font-bold text-slate-900 mb-4">Product Not Found</h1>
@@ -375,8 +375,8 @@ function ProductPage({ params }) {
           </div>
         </div>
       </div>
-      <Footer />
-    </>
+            <Footer />
+        </>
   );
 }
 
