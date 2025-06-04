@@ -97,7 +97,7 @@ export function Card({ item }) {
         disabled={item.stock === 0}
         className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium transition-colors duration-200 ${item.stock === 0
             ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
-            : 'bg-[#63B5C5] text-white hover:bg-[#4A9BA8]'
+            : 'bg-[#023047] text-white hover:bg-[#4A9BA8]'
           }`}
       >
         <svg

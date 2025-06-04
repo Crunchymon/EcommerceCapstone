@@ -185,7 +185,7 @@ function Carts() {
               <p className="text-slate-600 mb-8">Add some items to your cart to see them here</p>
               <button 
                 onClick={() => router.push('/')}
-                className="inline-flex items-center justify-center px-6 py-3 text-base font-semibold rounded-lg bg-[#63B5C5] text-white hover:bg-[#4A9BA8] transition-colors duration-200"
+                className="inline-flex items-center justify-center px-6 py-3 text-base font-semibold rounded-lg bg-[#023047] text-white hover:bg-[#035d8a] transition-colors duration-200"
               >
                 Continue Shopping
               </button>
