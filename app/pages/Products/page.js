@@ -7,11 +7,12 @@ import { Card } from '@/app/components/card';
 import Link from 'next/link';
 
 function Products() {
-  const { data, setData, showCaseData, setShowCaseData } = useAppContext();
+  const { data, setData, showCaseData, setShowCaseData, currentUser } = useAppContext();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [categories, setCategories] = useState([]);
   const [filterBy, setFilterBy] = useState("Filter By")
+  const [isLoading, setIsLoading] = useState(true);
 
   async function updateCart(userID,updatedCart){
 
@@ -30,7 +31,21 @@ function Products() {
   
   }
 
-  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch('/api/products');
+        const products = await res.json();
+        setData(products);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [setData]);
 
   useEffect(() => {
     // Extract unique categories from data
@@ -67,6 +82,14 @@ function Products() {
 
     setShowCaseData(filteredData);
   }, [searchQuery, selectedCategory, data, filterBy]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#023047]"></div>
+      </div>
+    );
+  }
 
   return (
     <>
