@@ -192,76 +192,7 @@ function Accounts() {
               </div>
             </div>
 
-            {/* Address Information */}
-            <div className="bg-white rounded-lg shadow-sm p-6 mt-8">
-              <h2 className="text-xl font-bold text-slate-900 mb-6">Address Information</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-slate-500 mb-1">Street Address</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={editedUser.address.street}
-                      onChange={(e) => setEditedUser({
-                        ...editedUser,
-                        address: { ...editedUser.address, street: e.target.value }
-                      })}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#023047] focus:border-transparent"
-                    />
-                  ) : (
-                    <p className="text-slate-900">{currentUser.address.street}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1">City</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={editedUser.address.city}
-                      onChange={(e) => setEditedUser({
-                        ...editedUser,
-                        address: { ...editedUser.address, city: e.target.value }
-                      })}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#023047] focus:border-transparent"
-                    />
-                  ) : (
-                    <p className="text-slate-900">{currentUser.address.city}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1">State</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={editedUser.address.state}
-                      onChange={(e) => setEditedUser({
-                        ...editedUser,
-                        address: { ...editedUser.address, state: e.target.value }
-                      })}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#023047] focus:border-transparent"
-                    />
-                  ) : (
-                    <p className="text-slate-900">{currentUser.address.state}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1">ZIP Code</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={editedUser.address.zipCode}
-                      onChange={(e) => setEditedUser({
-                        ...editedUser,
-                        address: { ...editedUser.address, zipCode: e.target.value }
-                      })}
-                      className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#023047] focus:border-transparent"
-                    />
-                  ) : (
-                    <p className="text-slate-900">{currentUser.address.zipCode}</p>
-                  )}
-                </div>
-              </div>
-            </div>
+           
           </div>
         </div>
       </div>

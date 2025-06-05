@@ -6,7 +6,7 @@ import Header from '@/app/components/Header';
 import Footer from '@/app/components/Footer';
 
 function Dashboard() {
-  const { currentUser } = useAppContext();
+  const { currentUser, isLoading } = useAppContext();
   const router = useRouter();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,30 +14,29 @@ function Dashboard() {
   const [deliveredOrders, setDeliveredOrders] = useState([]);
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!isLoading && !currentUser) {
       router.push('/pages/Authentication');
     }
+  }, [currentUser, isLoading, router]);
 
+  useEffect(() => {
     async function fetchOrders() {
       if (!currentUser?.id) return;
 
       try {
         setLoading(true);
-        // Assuming your user API route returns user data including orders
         const res = await fetch(`/api/users/${currentUser.id}`);
         if (!res.ok) {
           throw new Error('Failed to fetch user data');
         }
         const userData = await res.json();
 
-        // Filter and set orders based on status
         const allOrders = userData.orders || [];
         setCurrentOrders(allOrders.filter(order => order.status === 'Processing'));
-        setDeliveredOrders(allOrders.filter(order => order.status === 'Delivered')); // Assuming 'Delivered' is the status for delivered orders
+        setDeliveredOrders(allOrders.filter(order => order.status === 'Delivered'));
 
       } catch (error) {
         console.error('Error fetching orders:', error);
-        // Keep orders empty on error
         setCurrentOrders([]);
         setDeliveredOrders([]);
       } finally {
@@ -45,9 +44,18 @@ function Dashboard() {
       }
     }
 
-    fetchOrders();
+    if (currentUser?.id) {
+      fetchOrders();
+    }
+  }, [currentUser]);
 
-  }, [currentUser, router]);
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#023047]"></div>
+      </div>
+    );
+  }
 
   if (!currentUser) {
     return (

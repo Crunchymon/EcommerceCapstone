@@ -81,7 +81,7 @@ export function CartProvider({ children }) {
 
   const addToCart = (item) => {
     if (!currentUser?.id) {
-      console.error('User must be logged in to add items to cart');
+      alert('User must be logged in to add items to cart');
       // Optionally redirect to login or show a message
       return;
     }

@@ -1,16 +1,14 @@
 "use client"
-import React, { createContext, useContext, useState, useEffect, useRef } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AppContext = createContext();
 
-// Store the user state outside the component to persist across Fast Refresh
-let globalUser = null;
-
 export const AppProvider = ({ children }) => {
-  const [data,setData] = useState([]);
+  const [data, setData] = useState([]);
   const [showCaseData, setShowCaseData] = useState([]);
-  const [currentUser, setCurrentUser] = useState(globalUser);
-  const initialized = useRef(false);
+  const [currentUser, setCurrentUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [retryCount, setRetryCount] = useState(0);
 
   async function getUser(userId) {
     try {
@@ -18,60 +16,62 @@ export const AppProvider = ({ children }) => {
       if (!res.ok) {
         throw new Error('Failed to fetch user');
       }
-      const data = await res.json();
-      return data;
+      const userData = await res.json();
+      
+      // Validate user data
+      if (!userData || !userData.id || !userData.email) {
+        throw new Error('Invalid user data received');
+      }
+      
+      return userData;
     } catch (error) {
       console.error('Error fetching user:', error);
       return null;
     }
   }
 
-  // Initialize user from localStorage only once
+  // Load user from localStorage on mount
   useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
-
     async function loadUser() {
       try {
         const storedUserId = localStorage.getItem("currentUserId");
-        console.log("Loading user from localStorage:", storedUserId);
         
         if (storedUserId) {
           const parsedUserId = JSON.parse(storedUserId);
           const user = await getUser(parsedUserId);
           
           if (user) {
-            console.log("Setting current user:", user);
-            globalUser = user;
             setCurrentUser(user);
+            setRetryCount(0); // Reset retry count on successful load
           } else {
-            console.log("No user found, clearing localStorage");
-            globalUser = null;
-            localStorage.removeItem("currentUserId");
+            // If user data is invalid, clear storage and retry once
+            if (retryCount < 1) {
+              setRetryCount(prev => prev + 1);
+              localStorage.removeItem("currentUserId");
+              // Retry loading after a short delay
+              setTimeout(loadUser, 1000);
+            } else {
+              localStorage.removeItem("currentUserId");
+            }
           }
         }
       } catch (error) {
         console.error("Error loading user from localStorage:", error);
-        globalUser = null;
         localStorage.removeItem("currentUserId");
+      } finally {
+        setIsLoading(false);
       }
     }
     
     loadUser();
-  }, []);
+  }, [retryCount]);
 
-  // Update localStorage and global state when user changes
+  // Update localStorage when user changes
   useEffect(() => {
-    if (!initialized.current) return;
-
     try {
       if (currentUser && currentUser.id) {
-        console.log("Saving user to localStorage:", currentUser.id);
-        globalUser = currentUser;
         localStorage.setItem("currentUserId", JSON.stringify(currentUser.id));
       } else if (currentUser === null) {
-        console.log("Clearing user from localStorage");
-        globalUser = null;
         localStorage.removeItem("currentUserId");
       }
     } catch (error) {
@@ -79,16 +79,16 @@ export const AppProvider = ({ children }) => {
     }
   }, [currentUser]);
 
-  async function getData(){
-    const res = await fetch("/api/products")
-    const data = await res.json()
-    setData(data)
-    setShowCaseData(data)
+  async function getData() {
+    const res = await fetch("/api/products");
+    const data = await res.json();
+    setData(data);
+    setShowCaseData(data);
   }
 
-  useEffect(()=>{
-    getData()
-  },[])
+  useEffect(() => {
+    getData();
+  }, []);
 
   const value = {
     data,
@@ -96,7 +96,8 @@ export const AppProvider = ({ children }) => {
     showCaseData,
     setShowCaseData,
     currentUser,
-    setCurrentUser
+    setCurrentUser,
+    isLoading
   };
 
   return (

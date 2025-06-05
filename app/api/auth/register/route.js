@@ -8,10 +8,9 @@ export async function POST(req) {
     firstName, 
     lastName, 
     phoneNumber,
-    address 
   } = await req.json();
   
-  if (!username || !email || !password || !firstName || !lastName || !phoneNumber || !address) {
+  if (!username || !email || !password || !firstName || !lastName || !phoneNumber) {
     return Response.json({ error: 'All fields are required' }, { status: 400 });
   }
 
@@ -22,7 +21,6 @@ export async function POST(req) {
     firstName, 
     lastName, 
     phoneNumber,
-    address
   );
 
   if (!user) {
@@ -38,7 +36,6 @@ export async function POST(req) {
       firstName: user.firstName,
       lastName: user.lastName,
       phoneNumber: user.phoneNumber,
-      address: user.address
     } 
   });
 }
