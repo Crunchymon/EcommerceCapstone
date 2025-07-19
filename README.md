@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🛒 LoopCart - A Next.js E-Commerce Capstone Project
 
-## Getting Started
+LoopCart is a modern, full-featured e-commerce platform built with Next.js and React. It provides a seamless shopping experience, from Browse products to secure checkout, all wrapped in a clean and responsive user interface. This project serves as a comprehensive capstone project demonstrating modern web development practices.
 
-First, run the development server:
+\<br\>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+\<p align="center"\>
+\<a href="https://ecommerce-capstone-silk.vercel.app/" target="\_blank"\>
+\<img src="[https://img.shields.io/badge/Live%20Demo-Visit%20LoopCart-63B5C5?style=for-the-badge\&logo=vercel](https://www.google.com/search?q=https://img.shields.io/badge/Live%2520Demo-Visit%2520LoopCart-63B5C5%3Fstyle%3Dfor-the-badge%26logo%3Dvercel)" alt="Live Demo"\>
+\</a\>
+\</p\>
+
+\<p align="center"\>
+\<img src="./public/loopcart-showcase.png" alt="LoopCart Showcase" width="80%"\>
+\</p\>
+
+-----
+
+## ✨ Core Features
+
+  - **Dynamic Product Catalog:** Browse a rich catalog with advanced search and filtering by category, price, and brand.
+  - **Full Shopping Cart:** Add, remove, and update item quantities with a persistent cart that saves across sessions.
+  - **Streamlined Checkout:** An intuitive, multi-step checkout process leading to order confirmation.
+  - **Secure User Authentication:** A complete authentication system with registration, login, and persistent sessions.
+  - **Personalized User Dashboard:** Manage account details, track order status, and view order history.
+  - **Responsive Design:** A mobile-first design built with Tailwind CSS ensures a great experience on any device.
+
+-----
+
+## 🚀 Tech Stack
+
+| Category        | Technology                                                              |
+| --------------- | ----------------------------------------------------------------------- |
+| **Framework** | Next.js 15 (App Router)                                                 |
+| **UI Library** | React 19                                                                |
+| **Styling** | Tailwind CSS 4, Framer Motion, HeroUI                                   |
+| **Backend API** | Next.js API Routes                                                      |
+| **Database** | JSON Files (for simplified data persistence)                            |
+| **Security** | bcryptjs (for password hashing)                                         |
+| **Dev Tools** | Turbopack, ESLint, PostCSS                                              |
+
+-----
+
+## 🛠️ Getting Started
+
+### Prerequisites
+
+  - Node.js v18.x or later
+  - npm or yarn
+
+### Installation
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/Crunchymon/EcommerceCapstone
+    cd ecommercecapstone
+    ```
+
+2.  **Install dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+3.  **Run the development server:**
+
+    ```bash
+    npm run dev
+    ```
+
+4.  **Open your browser** and navigate to `http://localhost:3000`.
+
+-----
+
+## 📁 Project Structure
+
+The project uses the Next.js App Router for a clear and scalable structure.
+
+```
+ecommercecapstone/
+├── app/                  # Core application (pages & layouts)
+│   ├── (auth)/           # Route group for auth pages
+│   ├── api/              # Backend API endpoints
+│   ├── cart/             # Cart page
+│   ├── components/       # Reusable React components
+│   ├── context/          # Global state management (React Context)
+│   ├── dashboard/        # User dashboard pages
+│   └── products/         # Product listing and detail pages
+├── data/                 # JSON data files (users, products)
+├── public/               # Static assets (images, fonts)
+└── ...                   # Config files (tailwind.config.js, etc.)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+-----
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## 🚀 Deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This application is optimized for deployment on **Vercel**.
 
-## Learn More
+1.  Push your code to a GitHub repository.
+2.  Connect your repository to your Vercel account.
+3.  Vercel will automatically detect it's a Next.js project and deploy it.
 
-To learn more about Next.js, take a look at the following resources:
+-----
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📝 License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the MIT License. See the `LICENSE` file for more details.
