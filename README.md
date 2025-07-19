@@ -2,18 +2,8 @@
 
 LoopCart is a modern, full-featured e-commerce platform built with Next.js and React. It provides a seamless shopping experience, from Browse products to secure checkout, all wrapped in a clean and responsive user interface. This project serves as a comprehensive capstone project demonstrating modern web development practices.
 
-\<br\>
-
-\<p align="center"\>
-\<a href="https://ecommerce-capstone-silk.vercel.app/" target="\_blank"\>
-\<img src="[https://img.shields.io/badge/Live%20Demo-Visit%20LoopCart-63B5C5?style=for-the-badge\&logo=vercel](https://www.google.com/search?q=https://img.shields.io/badge/Live%2520Demo-Visit%2520LoopCart-63B5C5%3Fstyle%3Dfor-the-badge%26logo%3Dvercel)" alt="Live Demo"\>
-\</a\>
-\</p\>
-
-\<p align="center"\>
-\<img src="./public/loopcart-showcase.png" alt="LoopCart Showcase" width="80%"\>
-\</p\>
-
+## hosted Project Link :  https://ecommerce-capstone-silk.vercel.app/
+## Git Hub Repository : https://github.com/Crunchymon/EcommerceCapstone
 -----
 
 ## ✨ Core Features
