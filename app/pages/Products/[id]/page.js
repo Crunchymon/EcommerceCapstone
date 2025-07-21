@@ -9,13 +9,34 @@ import Image from 'next/image';
 function ProductPage({ params }) {
   const unbundledParams = use(params)
   const { currentUser } = useAppContext();
-  const { addToCart } = useCart();
+  const { cart, addToCart , updateQuantity } = useCart();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(0);
 
-  // Function to get initials from name
+  // console.log(product)
+  
+  const cartItem = cart.find(cartItem => {
+    if (product){
+      return cartItem.id === product.id;
+    }
+    return false;
+  });
+  const currentQuantity = cartItem?.quantity || 0;
+      
+  // console.log("Hello this if is the indivisual items page")
+  // console.log("The current quntity of this item is:")
+  // console.log(currentQuantity)
+  // Function to get initials from name/
+
+
+  const handleQuantityChange = (newQuantity) => {
+    // Prevent quantity from going below 1 (unless removing) or above stock
+    if (newQuantity < 1 && newQuantity !== 0) return; // Allow 0 for removal
+    if (newQuantity > product.stock) return; // Prevent exceeding stock
+    updateQuantity(product.id, newQuantity);
+  };
   const getInitials = (name) => {
     return name
       .split(' ')
@@ -38,7 +59,8 @@ function ProductPage({ params }) {
       }
     }
     fetchProduct();
-  }, [params.id]);
+    
+  }, [params]);
 
   if (loading) {
     return (
@@ -246,21 +268,58 @@ function ProductPage({ params }) {
                 </div>
 
                 {/* Add to Cart Button */}
+
+                {currentQuantity > 0 ? (
+                  <div className="flex items-center justify-between bg-slate-50 p-2 rounded-lg">
+                              <div className="flex items-center space-x-2">
+                                <button
+                                  onClick={(e) => { e.preventDefault(); handleQuantityChange(currentQuantity - 1); }}
+                                  className="w-7 h-7 flex items-center justify-center rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors"
+                                >
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                                  </svg>
+                                </button>
+                                <span className="text-base font-medium">{currentQuantity}</span>
+                                <button
+                                  onClick={(e) => { e.preventDefault(); handleQuantityChange(currentQuantity + 1); }}
+                                  className="w-7 h-7 flex items-center justify-center rounded-full bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 transition-colors"
+                                >
+                                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                  </svg>
+                                </button>
+                              </div>
+                              <span className="text-slate-600 text-sm">
+                                Total: ${(product.price * currentQuantity).toFixed(2)}
+                              </span>
+                            </div>
+                ) : (
                 <button
-                  onClick={handleAddToCart}
-                  disabled={!currentUser || product.stock === 0}
-                  className={`w-full py-3 px-6 rounded-lg font-semibold ${
-                    !currentUser || product.stock === 0
-                      ? 'bg-gray-300 cursor-not-allowed'
-                      : 'bg-[#023047] text-white hover:bg-[#012235]'
-                  } transition-colors duration-200`}
+                    onClick={(e) => { e.preventDefault(); addToCart(product); }}
+                  disabled={product.stock === 0}
+                  className={`w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium transition-colors duration-200 ${product.stock === 0
+                      ? 'bg-slate-100 text-slate-400 cursor-not-allowed'
+                      : 'bg-[#023047] text-white hover:bg-[#045b87]'
+                    }`}
                 >
-                  {!currentUser
-                    ? 'Login to Add to Cart'
-                    : product.stock === 0
-                    ? 'Out of Stock'
-                    : 'Add to Cart'}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
                 </button>
+                )}
 
                 {/* Buy Now Button */}
                 <button

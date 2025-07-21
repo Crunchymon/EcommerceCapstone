@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
+import Link from 'next/link'
 
 function Carts() {
   const { currentUser } = useAppContext()
@@ -28,6 +29,7 @@ function Carts() {
         userId: currentUser.id,
         isCartCheckout: true,
         items: cart.map(item => ({
+          // console.log(item)
           id: item.id,
           title: item.title,
           price: item.price,
@@ -35,6 +37,8 @@ function Carts() {
           thumbnail: item.thumbnail
         }))
       };
+
+      console.log(orderData)
 
       const res = await fetch('/api/order', {
         method: 'POST',
@@ -77,7 +81,8 @@ function Carts() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <>
+      <div className="min-h-screen bg-slate-50">
       <Header />
       <main>
         {/* Header Section */}
@@ -95,14 +100,19 @@ function Carts() {
                 <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                   <div className="divide-y divide-gray-200">
                     {cart.map((item) => (
+             
                       <div key={item.id} className="p-6">
                         <div className="flex items-center gap-6">
                           <div className="w-24 h-24 flex-shrink-0">
+                            <Link 
+                            href = {`/pages/Products/${item.id}`}
+                            >
                             <img 
                               src={item.thumbnail} 
                               alt={item.title} 
                               className="w-full h-full object-cover rounded-lg"
                             />
+                            </Link>
                           </div>
                           <div className="flex-grow">
                             <h3 className="text-lg font-semibold text-slate-900 mb-2">{item.title}</h3>
@@ -186,8 +196,10 @@ function Carts() {
           )}
         </div>
       </main>
-      <Footer />
     </div>
+    <Footer />
+    </>
+    
   )
 }
 

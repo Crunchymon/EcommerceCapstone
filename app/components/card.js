@@ -6,7 +6,7 @@ export function Card({ item }) {
   const [imageError, setImageError] = useState(false);
   const { cart, addToCart, updateQuantity } = useCart();
   const handleImageError = () => {
-    console.error('Failed to load image:', item.thumbnail);
+    // console.error('Failed to load image:', item.thumbnail);
     setImageError(true);
   };
 
