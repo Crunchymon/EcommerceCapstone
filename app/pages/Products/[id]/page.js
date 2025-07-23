@@ -142,13 +142,6 @@ function ProductPage({ params }) {
         console.log('Order placed successfully:', result);
         alert('Order placed successfully!'); // Simple success feedback
 
-        // Optionally remove the item from the cart if it was in there
-        // This depends on your desired Buy Now flow. If Buy Now bypasses cart,
-        // you might not need this. If it's an alternative checkout from product page,
-        // you might remove it from cart. For this example, I'll assume it could be in cart.
-         // This will be implemented after adding the cart context to this page
-         // const { removeFromCart } = useCart(); // Need to access useCart here
-         // removeFromCart(product.id);
 
       } catch (error) {
         console.error('Error placing order:', error);

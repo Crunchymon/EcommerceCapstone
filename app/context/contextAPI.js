@@ -9,6 +9,7 @@ export const AppProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [retryCount, setRetryCount] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   async function getUser(userId) {
     try {
@@ -97,7 +98,9 @@ export const AppProvider = ({ children }) => {
     setShowCaseData,
     currentUser,
     setCurrentUser,
-    isLoading
+    isLoading,
+    isMenuOpen,
+    setIsMenuOpen
   };
 
   return (

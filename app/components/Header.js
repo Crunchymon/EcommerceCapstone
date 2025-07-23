@@ -5,9 +5,9 @@ import { useAppContext } from '../context/contextAPI';
 import { useRouter } from 'next/navigation';
 
 function Header() {
-    const { currentUser, setCurrentUser } = useAppContext();
+    const { currentUser, setCurrentUser, isMenuOpen, setIsMenuOpen } = useAppContext();
     const router = useRouter();
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
 
     const handleLogout = () => {
         setCurrentUser(null);
@@ -15,7 +15,7 @@ function Header() {
     };
 
     return (
-        <header className="bg-[#023047] text-white shadow-md">
+        <header className="bg-[#023047] text-white shadow-md border-b-2 md:border-none">
             <nav className="max-w-10xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-20">
                     {/* Logo/Brand */}
@@ -27,28 +27,28 @@ function Header() {
 
                     {/* Desktop Navigation */}
                     <div className="hidden md:flex items-center space-x-8">
-                        <Link 
-                            href="/" 
+                        <Link
+                            href="/"
                             className="text-white hover:text-gray-200 transition-all duration-200 font-medium text-lg hover:scale-105 transform"
                         >
                             Home
                         </Link>
-                        <Link 
-                            href="/pages/Products" 
+                        <Link
+                            href="/pages/Products"
                             className="text-white hover:text-gray-200 transition-all duration-200 font-medium text-lg hover:scale-105 transform"
                         >
                             Products
                         </Link>
                         {currentUser ? (
                             <>
-                                <Link 
-                                    href="/pages/carts" 
+                                <Link
+                                    href="/pages/carts"
                                     className="text-white hover:text-gray-200 transition-all duration-200 font-medium text-lg hover:scale-105 transform"
                                 >
                                     Cart
                                 </Link>
-                                <Link 
-                                    href="/pages/Dashboard" 
+                                <Link
+                                    href="/pages/Dashboard"
                                     className="text-white hover:text-gray-200 transition-all duration-200 font-medium text-lg hover:scale-105 transform"
                                 >
                                     Dashboard
@@ -61,8 +61,8 @@ function Header() {
                                 </Link>
                             </>
                         ) : (
-                            <Link 
-                                href="/pages/Authentication" 
+                            <Link
+                                href="/pages/Authentication"
                                 className="text-white hover:text-gray-200 transition-all duration-200 font-medium text-lg hover:scale-105 transform"
                             >
                                 Login
@@ -93,8 +93,13 @@ function Header() {
                 </div>
 
                 {/* Mobile Navigation */}
-                {isMenuOpen && (
-                    <div className="md:hidden">
+               
+                    <div
+                        className={`
+                            md:hidden overflow-hidden transition-all duration-300 ease-in-out
+                            ${isMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'}
+                        `}
+                    >
                         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                             <Link
                                 href="/"
@@ -145,7 +150,6 @@ function Header() {
                             )}
                         </div>
                     </div>
-                )}
             </nav>
         </header>
     );
